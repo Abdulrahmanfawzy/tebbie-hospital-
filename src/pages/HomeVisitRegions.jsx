@@ -27,6 +27,7 @@ const HomeVisitRegions = () => {
   // Form state
   const [selectedCityId, setSelectedCityId] = useState("");
   const [selectedRegionId, setSelectedRegionId] = useState("");
+  const [selectedServiceId, setSelectedServiceId] = useState("");
   const [locationPrice, setLocationPrice] = useState("");
   const [status, setStatus] = useState("active");
 
@@ -86,6 +87,7 @@ const HomeVisitRegions = () => {
   const resetForm = () => {
     setSelectedCityId("");
     setSelectedRegionId("");
+    setSelectedServiceId("");
     setLocationPrice("");
     setStatus("active");
     setEditingRegion(null);
@@ -105,6 +107,7 @@ const HomeVisitRegions = () => {
       setSelectedRegionId(String(region.region_id));
       setLocationPrice(region.location_price);
       setStatus(region.status);
+      setSelectedServiceId(String(region.home_visit_service_id));
     } else {
       resetForm();
     }
@@ -131,6 +134,7 @@ const HomeVisitRegions = () => {
       region_id: parseInt(selectedRegionId),
       location_price: locationPrice,
       status,
+      home_visit_service_id: selectedServiceId,
     };
 
     if (editingRegion) {
@@ -394,6 +398,32 @@ const HomeVisitRegions = () => {
                         لا توجد مناطق متاحة لهذه المدينة
                       </p>
                     )}
+                </div>
+
+                {/* service Select */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    الخدمة <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    className={`w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#33A9C7] `}
+                    required
+                    value={selectedServiceId}
+                    onChange={(e) => setSelectedServiceId(e.target.value)}
+                  >
+                    <option value="">
+                      {isLoadingRegions ? "جاري التحميل..." : "اختر الخدمة"}
+                    </option>
+                    {regions?.map((region) => (
+                      <option
+                        key={region.service.id}
+                        className="text-black"
+                        value={region.service.id}
+                      >
+                        {region.service.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 {/* Price Input */}

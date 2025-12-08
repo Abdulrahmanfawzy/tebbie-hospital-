@@ -1681,6 +1681,7 @@ export const addHomeVisitRegion = async ({
   region_id,
   location_price,
   status,
+  home_visit_service_id,
 }) => {
   try {
     const response = await fetch(
@@ -1696,6 +1697,7 @@ export const addHomeVisitRegion = async ({
           region_id,
           location_price,
           status,
+          home_visit_service_id,
         }),
       }
     );
