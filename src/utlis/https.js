@@ -477,6 +477,27 @@ export const DeleteDocktorSlots = async ({
     throw error;
   }
 };
+
+export const updateMaxUsedDoctor = async ({ token, slot_id, max_capacity }) => {
+  const payload = {
+    slot_id,
+    max_capacity,
+  };
+
+  const response = await fetch(`${API_URL}/hospital/v1/slot/update-capacity`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const result = await response.json();
+  if (!response.ok) throw new Error(result.msg);
+  return result.data;
+};
+
 export const getSpecialization = async ({ token, id }) => {
   try {
     const response = await fetch(`${API_URL}/hospital/v1/get-booking/${id}`, {
@@ -1765,6 +1786,32 @@ export const getCities = async ({ token }) => {
         Authorization: `Bearer ${token}`,
       },
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to fetch cities");
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    throw new Error(error.message || "An unexpected error occurred");
+  }
+};
+
+// Get Home Services
+export const getHomeServices = async ({ token }) => {
+  try {
+    const response = await fetch(
+      `${API_URL}/hospital/v1/get-home-visit-services-for-hospital`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
